@@ -1095,12 +1095,9 @@ button:active:not(:disabled) {
 
 .message-line {
   position: absolute;
-  top: auto;
-  bottom: 90px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: auto;
-  max-width: 300px;
+  top: 14px;
+  left: 16px;
+  right: 16px;
   padding: 0.5rem 0.75rem;
   background: rgba(11, 26, 42, 0.7);
   border-radius: 8px;

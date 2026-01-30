@@ -1093,9 +1093,7 @@ function renderState(state) {
     // Ensure media path starts with / if not already
     const fullMediaSrc = mediaSrc.startsWith('/') ? mediaSrc : `/${mediaSrc}`;
     mediaWindow.style.backgroundImage = `url('${fullMediaSrc}')`;
-    console.log('Setting media background:', fullMediaSrc);
   } else {
-    console.warn('No media source available for opponent:', opponentName);
     mediaWindow.style.backgroundImage = 'none';
   }
 

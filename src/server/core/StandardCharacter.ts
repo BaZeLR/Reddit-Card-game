@@ -185,9 +185,8 @@ export class Character {
 
   checkDebt(): void {
     if (this.money < 0) {
-      console.log(`${this.name} went into debt: ${this.money}`);
       if (this.owed < 0) {
-        console.log(`Already owes: ${this.owed}`);
+        // Already owes money, combine debts
       }
       this.owed = this.money;
       return;
@@ -278,7 +277,6 @@ export class Character {
       brashnessFoldNoise -
       (gameStage === 'bet_and_call' ? 5 : 0);
     if (toPot === 0 && foldCheck >= 0 && betCheck >= 0) {
-      console.log(`${this.name} decided not to fold when they could try to stay instead.`);
       foldCheck = -1;
     }
     if (
@@ -289,7 +287,6 @@ export class Character {
       foldCheck < 1 &&
       betCheck >= 0
     ) {
-      console.log(`${this.name} decided to fold rather than go into debt on ${aan(handValue[0])}.`);
       foldCheck = 1;
     }
     if (
@@ -299,15 +296,12 @@ export class Character {
       foldCheck < 1 &&
       betCheck >= 0
     ) {
-      console.log(`${this.name} decided to fold rather than try to call with ${aan(handValue[0])}.`);
       foldCheck = 1;
     }
     if (this.owed < 0 && foldCheck >= 0 && betCheck >= 0) {
-      console.log(`${this.name} cannot fold because they owe money.`);
       foldCheck = -1;
     }
     if (betCheck < 0 && this.totalBet + toPot - this.lastBet + 5 <= betCap) {
-      console.log(`${this.name} bet`);
       let betAmount = 0;
       if (this.brashness > 0) {
         betAmount =
@@ -322,11 +316,8 @@ export class Character {
         betAmount *= randInt(2, 4);
       }
       if (betAmount > setMax) betAmount = setMax;
-      console.log(`${this.name}: ${this.totalBet + betAmount + toPot - this.lastBet}<${betCap}`);
       if (this.totalBet + betAmount + toPot - this.lastBet > betCap) {
-        console.log(`${betAmount} is over the bet cap, reducing.`);
         betAmount = betCap - this.totalBet - toPot + this.lastBet;
-        console.log(`${this.name} bets ${betAmount} instead.`);
       }
       if (betAmount < 5) betAmount = 5;
       let betMsg = '';
@@ -352,11 +343,6 @@ export class Character {
       return this.handleMsg('call');
     }
     this.folded = true;
-    if (handValue[1] > 7) {
-      console.log(`${this.name} folded`);
-    } else {
-      console.log(`${this.name} folded on a ${handValue[0]}. What an idiot!`);
-    }
     return this.handleMsg('fold');
   }
 
@@ -417,7 +403,6 @@ export class Character {
           ['game_over']
         )
       );
-      console.log(`${this.name} lost. PROMOTIONS!`);
     }
     return msgs;
   }

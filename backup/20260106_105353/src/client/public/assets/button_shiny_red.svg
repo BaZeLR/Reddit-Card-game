@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <defs>
+    <radialGradient id="redGrad" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#ffd6d6"/>
+      <stop offset="35%" stop-color="#ff4a4a"/>
+      <stop offset="70%" stop-color="#b30000"/>
+      <stop offset="100%" stop-color="#5a0000"/>
+    </radialGradient>
+    <radialGradient id="redGloss" cx="30%" cy="25%" r="45%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="redGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="0" stdDeviation="8"
+        flood-color="#ff4a4a" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+  <circle cx="60" cy="60" r="46"
+    fill="url(#redGrad)"
+    stroke="#ffd6a3"
+    stroke-width="4"
+    filter="url(#redGlow)"/>
+  <circle cx="60" cy="46" r="32"
+    fill="url(#redGloss)"/>
+  <circle cx="60" cy="60" r="46"
+    fill="none"
+    stroke="#3a0000"
+    stroke-width="2"
+    opacity="0.8"/>
+</svg>

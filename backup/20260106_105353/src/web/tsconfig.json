@@ -1,0 +1,15 @@
+// TypeScript config for Devvit Web React client.
+{
+  "extends": "../../tools/tsconfig-base.json",
+  "compilerOptions": {
+    "customConditions": ["browser"],
+    "lib": ["DOM", "ES2023", "esnext.disposable"],
+    "outDir": "../../dist/types/web",
+    "jsx": "react-jsx",
+    "tsBuildInfoFile": "../../dist/web/tsconfig.tsbuildinfo",
+    "strictPropertyInitialization": false
+  },
+  "include": ["**/*", "**/*.json"],
+  "exclude": ["**/*.test.ts"],
+  "references": [{ "path": "../shared" }]
+}

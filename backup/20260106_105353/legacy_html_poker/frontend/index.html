@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Poker Lounge</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+  <noscript>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        color: red;
+      }
+      .noscript-warning {
+        display: block;
+        text-align: center;
+        margin: 20px;
+      }
+    </style>
+    <div class="noscript-warning">JavaScript is required to use this application.</div>
+  </noscript>
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <h1>Poker Lounge</h1>
+      <p>Web controller for the headless PyGame-inspired engine.</p>
+    </div>
+    <div id="status-chip" class="status-chip">Not connected</div>
+  </header>
+
+  <main>
+    <section id="age-gate" class="panel gate">
+      <h2>Hello</h2>
+      <p class="lead">
+        Attention: this game involves nudity and adult content which is not for minors and faint hearted.
+        If your age is above 18 press Yes else press No.
+      </p>
+      <div class="cta-row">
+        <button id="age-yes" class="primary">Yes, I'm 18+</button>
+        <button id="age-no" class="ghost">No</button>
+      </div>
+      <div id="age-warning" class="notice hidden">You must be 18+ to continue.</div>
+    </section>
+
+    <section id="opponent-select" class="panel hidden">
+      <div class="panel-heading">
+        <div>
+          <h2>Select Your Opponent</h2>
+          <p>Pick a challenger to load their portrait and behaviour.</p>
+        </div>
+        <button id="start-game" class="primary" disabled>Start</button>
+      </div>
+      <div id="opponent-grid" class="opponent-grid"></div>
+    </section>
+
+    <section id="game-area" class="panel hidden">
+      <div class="topbar">
+        <div>Stage: <span id="stage">not_started</span></div>
+        <div>Pot: <span id="pot">0</span></div>
+        <div>To Call: <span id="call-amount">0</span></div>
+        <div>System: <span id="system-message">-</span></div>
+        <span id="game-id" style="display: none;">-</span>
+        <div style="display: none;">
+          <span id="player-name"></span>
+          <span id="player-money"></span>
+          <span id="opponent-name"></span>
+          <span id="opponent-money"></span>
+        </div>
+      </div>
+
+      <div class="layout">
+        <div class="table-wrapper">
+          <div id="table" aria-live="polite">
+            <div id="media-window"></div>
+            <div class="hands">
+              <div class="hand player">
+                <div class="hand-label">Player</div>
+                <div id="player-hand" class="cards-row"></div>
+              </div>
+              <div class="hand opponent">
+                <div class="hand-label">Opponent</div>
+                <div id="opponent-hand" class="cards-row"></div>
+              </div>
+            </div>
+            <div id="table-banner" class="banner hidden"></div>
+            <div id="message-line" class="message-line"></div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <div class="buttons">
+            <div class="bet-row">
+              <button data-action="bet">Bet</button>
+              <input id="bet-amount" type="number" min="1" placeholder="Amount" />
+            </div>
+            <button data-action="raise">Raise</button>
+            <button data-action="stay">Stay</button>
+            <button data-action="call">Call</button>
+            <button data-action="fold">Fold</button>
+          </div>
+          <div class="buttons secondary">
+            <div class="draw-row">
+              <button id="draw-start" class="small">Draw</button>
+              <button id="draw-done" class="small" data-mode="change_cards">Done</button>
+            </div>
+            <button data-mode="round_two">Round Two</button>
+            <button data-mode="showdown">Showdown</button>
+            <button data-mode="end_round">End Round</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

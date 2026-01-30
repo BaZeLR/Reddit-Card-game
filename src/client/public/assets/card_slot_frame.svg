@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 128" preserveAspectRatio="none">
+  <defs>
+    <linearGradient id="slotMetal" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#404850"/>
+      <stop offset="100%" stop-color="#141a20"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="3" y="3" width="90" height="122" rx="10"
+        fill="url(#slotMetal)"
+        stroke="#f2c24d"
+        stroke-width="2"/>
+
+  <rect x="9" y="9" width="78" height="110" rx="8"
+        fill="none"
+        stroke="#000"
+        stroke-width="1"
+        opacity="0.7"/>
+</svg>

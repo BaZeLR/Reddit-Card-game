@@ -1,0 +1,92 @@
+Dev doc:
+Strip poker game flow, 
+1>landing page, Warning sign with two buttons(18+, and the age)--done
+2>18+ hit---> we go to select opponent screen --done, No hit, we quit application (So long pop up) --todo
+3>opponent selected, start button pressed--->main game screen.
+4>video of new round
+5>after video
+Starting round(game state update, pot =0)
+ a)game already has player list; chooses dealer for the round by index (starts at 0, then dealer = (dealer + 1) % players each round), and sets active player to the non dealer. ">" sign marks active turn, "--" marks not active; dealer is announced in system message and rotates each round.
+automatic process by game, game message system updates
+,b) dealer shuffles cards(shuffle sound plays),
+   Tick order: _deal_new_deck() -> new Deck() + _log('shuffle_deck')
+   Message/SFX: "Shuffling cards" message is queued later in start_round (after ante loop); UI plays shuffle SFX on that message tag.
+c)dealer deals cards(deal sound plays); if dealer is player (not AI), opponent AI says dealing message,
+   Shy: "Here they come... my cards are being dealt. Please don't laugh if they're terrible."
+   Normal: "Cards dealt. Let's see how cruel or kind the deck is feeling tonight."
+   Tipsy: "Hehe... dealing while the room spins just a tiny bit. Don't tell."
+   Losing: "Dealing again... because apparently I love losing to you."
+   Winning: "Dealing while my pile grows. You're going to look so pretty stripped bare."
+   Sassy: "Dealing cards while you stare. Eyes up here... or lower, your choice."
+   Witty: "Cards on the felt. In poker, as in passion: position is everything."
+d)ante posting(money sounds play)-->money deducted from players, pot updated,
+   Tick order in start_round (per player):
+   1) player.AI.money -= ante
+   2) player.AI.totalBet += ante
+   3) player.AI.checkDebt()
+   4) _maybe_queue_debt_message(player)
+   5) _handle_debt_strip(player)
+   6) pot += ante
+   7) _trace_accounting(player, 'ante')
+Betting round(1)
+   Tick order (per action):
+   1) UI sends poker_action(action, amount?)
+   2) _action_bet / _action_call / _action_stay / _action_fold runs
+   3) update money + totalBet (+callOwed if any)
+   4) player.AI.checkDebt() (if not in AI.bet), then _maybe_queue_debt_message(player)
+   5) _handle_debt_strip(player)
+   6) pot updated
+   7) _recalculate_call_owed()
+   8) queue_message(action text + tags), _log(action), _queue_responses()
+   9) _maybe_advance_after_resolution() decides: tie showdown, change_cards, or continue
+   10) if round continues: _advance_player() -> _auto_act_if_ai()
+   Rule: stay/check is treated as a bet with 0 toPot; if opponent later bets, you must call or fold when it is your turn (staying with call owed auto-converts to call).
+game has debt check procedure: amount of money in players money, if less than zero, Notify; you must pawn your cloth/you must to undress, game allows another credit of 100 per each item or valuable, for character picture change automatically(cloth sound is played on cloth removal wearing, to the next picture if still has items or picture array is <=its length. thus game will compute how much credit allowed. Example: 5 items array will yield 100*number of items or number of pictures -1 in picture array for character. 
+Game state/stage update message
+e)if player is active and human: places his bet(debt checked if amount of money in players money 0 or less must remove cloth, if no cloths left game over ,new round called)--> AI message, money sounds play if bet. if else -->hand evaluation, decision, if bet(plays sound ,game sets player to non active, next player turn.
+f)set next player as active (advance turn)
+   Tick order:
+   1) _advance_player() -> currentlyOn rotates to next active (not folded, not lost)
+   2) _recalculate_call_owed() -> call owed updated for all; toPot = current player's callOwed
+   3) if AI: _auto_act_if_ai() -> processResponse() -> queue AI msg -> apply action(s)
+   4) if human: wait for UI action (bet/raise/call/stay/fold)
+   5) on action, follow Betting round tick order above (money deducted, pot updated, messages queued)
+if amount to call is zero: game changes stage to Draw anyway. Active player draws first; AI says how many cards it wants to replace. Draw/replace plays flip sound. When drawing is done, game changes to round two.
+Game state changes for 
+Betting round(after draw / round two),active player must bet, call, raise, check, or fold. if Character -->hand evaluation, decision. If amount to call>0,must call, can raise; if amount to call==0, can check/bet, or fold. each bet pot updated, each bet amount deducted from active player money, money state is updated.
+Fold rule (both betting rounds): AI must post a fold message first, then fold procedure resolves (player marked folded, pot/winner resolution if only one remains).
+End of Game -game changes to showdown: automatic if character, player has showdown button. Winner is set! Winner pop up screen Win/loss stats updated on Redis, winner takes pot. winners money updated +pot money.
+   Showdown hand rank check (corrected procedure):
+   1) Reveal both hands (showdown message).
+   2) Evaluate ranking order: Royal Flush > Straight Flush > Four of a Kind > Full House > Flush > Straight > Three of a Kind > Two Pair > Pair > High Card.
+   3) Tie-breakers: compare primary rank value, then kicker list descending (e.g., pair value then kickers). High card uses full descending kicker list (highest to lowest). Ace-low straight counts as 5-high.
+   4) If still tied, split pot.
+game system checks game over condition(for character: array index on last item ) for player: current credit negative amount bigger than allowed credit
+end of round: next round video played, game starts from main game screen. Game stage changed; Starting round. If game over! Play again/
+quit(todo button)
+Redis, reddit nickname, wins/losses rounds played, trophy:(pink panties),cool lewd pic etc.
+
+debt logic: we discussed the logic of debt : max debt is maxItems in cloth/valuables array, or length of picture array-1. multiplied by 100. thus each item of cloth or valuables worth 100. players remove cloth, gives valuable or favor, until it have it. if not-->game over. Winner take the whale pot, since money is always deducted on bet from money account. if player has 5 items he/she can reach -500 maximum. after that game over. if wins hand and in debt and takes the whole pot(positive money) it's credit updates and debt lessens by amount of money in the pot won. example player in panties: and this is last item his money amount is -450(450 debt) and he wins 250 his money amount is -200 and only two items of cloth is missing. socks and hoodie per say...
+money/strip checkpoints (tick logic):
+1) Each wardrobe item is worth 100 credit.
+2) Checkpoints are 0, -100, -200, ... down to -(items * 100) as max.
+3) Before each bet/call/ante, if money is below the next checkpoint, player strips one item and gets that credit line; system posts strip status (and AI remark for AI).
+4) Money continues to update negative on bets, pot updates positive as usual.
+5) If checkpoint reaches max (items * 100), game over triggers.
+ 
+Discrepancies vs current game logic (tick-by-tick, 2026-01-05):
+1) Age gate "No" does not quit or show a "So long" popup; it only shows the warning and keeps the user on the gate.
+2) Dealer marker: UI shows ">" for the active turn, not the dealer; dealer only appears in a system message (no dedicated dealer icon in the UI).
+3) New round video timing: server starts the round (pot reset, ante, shuffle/deal) before the video plays; video is triggered by the "start_round" message and does not gate server state.
+4) Ante posting: no explicit ante message; money SFX is tied to "start_round", not to each ante post.
+5) Betting round (1) actions: doc implies bet-only flow; current logic supports bet/raise/call/stay/fold plus an extra RAISE_AND_CALL stage when rules=1.
+6) Bet input: doc says hit Enter to bet; current UI only posts bets via button clicks (no Enter binding).
+7) Draw phase gating: doc says draw only when amount-to-call is zero; current logic auto-enters change_cards after betting resolves if anyone bet, and ends in a tie with no draw if everyone checks. UI also lets players press "Draw Cards" during bet_and_stay/raise_and_call even if call owed > 0 or before round resolves.
+8) Draw stage naming + SFX: stage name is change_cards (not drawdown); no flip SFX is wired for draw/new_cards messages.
+9) Betting round after draw: doc says must bet/fold; current logic uses BET_AND_CALL and allows stay/call/raise/bet without enforcing a bet.
+10) Showdown: UI exposes a Showdown button at any time; server accepts change_mode('showdown') without stage checks (can force early showdown).
+11) Win/loss stats + trophies: doc expects Redis-backed stats and rewards; current code has manual Devvit stats only (not connected to game flow) and no trophy system.
+12) Game over flow: modal offers "Choose New Opponent" and "Quit", but no one-click "play again" vs same opponent. Age-gate "No" still does not quit.
+13) Extra mechanic not in doc: "Buy Lady a Drink" action reveals a card and can trigger game over if the opponent passes out.
+14) Shuffle/deal events are system messages; they are not tied to dealer identity and no opponent AI "dealing" line is triggered when player is dealer.
+ 

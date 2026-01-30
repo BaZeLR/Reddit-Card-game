@@ -1,0 +1,12 @@
+// TypeScript config for Devvit UI scaffolding.
+{
+  "extends": "../../tools/tsconfig-base.json",
+  "compilerOptions": {
+    "lib": ["ES2023"],
+    "jsx": "react-jsx",
+    "outDir": "../../dist/types/reddit",
+    "tsBuildInfoFile": "../../dist/reddit/tsconfig.tsbuildinfo",
+    "strictPropertyInitialization": false
+  },
+  "include": ["**/*"]
+}

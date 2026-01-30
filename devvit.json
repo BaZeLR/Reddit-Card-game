@@ -1,15 +1,15 @@
 {
   "$schema": "https://developers.reddit.com/schema/config-file.v1.json",
-  "name": "<% name %>",
+  "name": "poker-nights",
   "post": {
     "dir": "dist/client",
     "entrypoints": {
       "default": {
         "inline": true,
-        "entry": "splash.html"
+        "entry": "preview.html"
       },
       "game": {
-        "entry": "game.html"
+        "entry": "index.html"
       }
     }
   },
@@ -20,11 +20,14 @@
     "dir": "dist/server",
     "entry": "index.cjs"
   },
+  "permissions": {
+    "redis": true
+  },
   "menu": {
     "items": [
       {
         "label": "Create a new post",
-        "description": "<% name %>",
+        "description": "html-poker",
         "location": "subreddit",
         "forUserType": "moderator",
         "endpoint": "/internal/menu/post-create"
@@ -33,5 +36,8 @@
   },
   "triggers": {
     "onAppInstall": "/internal/on-app-install"
+  },
+  "dev": {
+    "subreddit": "poker_nights_dev"
   }
 }

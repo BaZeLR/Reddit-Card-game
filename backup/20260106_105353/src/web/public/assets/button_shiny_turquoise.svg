@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <defs>
+    <radialGradient id="blueGrad" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#d9ffff"/>
+      <stop offset="35%" stop-color="#33e0ff"/>
+      <stop offset="70%" stop-color="#007fa3"/>
+      <stop offset="100%" stop-color="#003b4a"/>
+    </radialGradient>
+    <radialGradient id="blueGloss" cx="30%" cy="25%" r="45%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="blueGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="0" stdDeviation="8"
+        flood-color="#33e0ff" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+  <circle cx="60" cy="60" r="46"
+    fill="url(#blueGrad)"
+    stroke="#b8ffff"
+    stroke-width="4"
+    filter="url(#blueGlow)"/>
+  <circle cx="60" cy="46" r="32"
+    fill="url(#blueGloss)"/>
+  <circle cx="60" cy="60" r="46"
+    fill="none"
+    stroke="#002c36"
+    stroke-width="2"
+    opacity="0.8"/>
+</svg>

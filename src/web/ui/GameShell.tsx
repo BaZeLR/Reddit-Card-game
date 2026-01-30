@@ -6,7 +6,7 @@ declare global {
   }
 }
 
-export function GameShell(): JSX.Element {
+export function GameShell(): React.JSX.Element {
   useEffect(() => {
     if (window.__pokerLegacyLoaded) {
       return;

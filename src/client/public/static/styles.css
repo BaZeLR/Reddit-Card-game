@@ -856,10 +856,15 @@ button:active:not(:disabled) {
 }
 
 .wallet-actions {
+  position: absolute;
+  bottom: 130px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
   gap: 6px;
   flex: 0 0 auto;
+  z-index: 9;
 }
 
 .icon-button {
@@ -1090,9 +1095,12 @@ button:active:not(:disabled) {
 
 .message-line {
   position: absolute;
-  top: 14px;
-  left: 16px;
-  right: 16px;
+  top: auto;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  max-width: 300px;
   padding: 0.5rem 0.75rem;
   background: rgba(11, 26, 42, 0.7);
   border-radius: 8px;

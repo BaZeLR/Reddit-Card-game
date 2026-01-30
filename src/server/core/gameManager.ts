@@ -292,6 +292,11 @@ export class GameManager {
       callOwed: ai.callOwed ?? 0,
       ...extra,
     });
+    console.log(
+      `[acct] ${ai.name} ${reason} money=${money} debt=${debt} onTry=${ai.onTry ?? 0} ` +
+        `expDebt=${expectedDebt} expOnTry=${expectedOnTry} pot=${this.pot} ` +
+        `totalBet=${ai.totalBet ?? 0} callOwed=${ai.callOwed ?? 0}`
+    );
   }
 
   queue_message(text: string, assoc_action = '', tags: string[] = [], name = ''): void {

@@ -126,6 +126,73 @@ const NEW_ROUND_VIDEOS = [
 
 let newRoundVideoEl = null;
 let newRoundVideoPlaying = false;
+let opponentVideoEl = null;
+
+function resolveMediaSrc(mediaSrc) {
+  if (!mediaSrc) return null;
+  if (
+    mediaSrc.startsWith("http://") ||
+    mediaSrc.startsWith("https://") ||
+    mediaSrc.startsWith("data:") ||
+    mediaSrc.startsWith("blob:")
+  ) {
+    return mediaSrc;
+  }
+  return mediaSrc.startsWith("/") ? mediaSrc : `/${mediaSrc}`;
+}
+
+function ensureOpponentVideoEl() {
+  if (!mediaWindow) return null;
+  if (opponentVideoEl) return opponentVideoEl;
+  const video = document.createElement("video");
+  video.className = "opponent-media-video";
+  video.muted = true;
+  video.loop = true;
+  video.playsInline = true;
+  video.setAttribute("playsinline", "true");
+  video.preload = "auto";
+  video.tabIndex = -1;
+  video.setAttribute("aria-hidden", "true");
+  mediaWindow.appendChild(video);
+  opponentVideoEl = video;
+  return video;
+}
+
+function setMediaWindowMedia(mediaSrc) {
+  if (!mediaWindow) return;
+  const resolved = resolveMediaSrc(mediaSrc);
+  if (!resolved) {
+    mediaWindow.style.backgroundImage = "none";
+    if (opponentVideoEl) {
+      opponentVideoEl.pause();
+      opponentVideoEl.removeAttribute("src");
+      opponentVideoEl.load();
+    }
+    return;
+  }
+  const isVideo = resolved.toLowerCase().endsWith(".mp4");
+  if (isVideo) {
+    const video = ensureOpponentVideoEl();
+    if (video) {
+      mediaWindow.style.backgroundImage = "none";
+      if (video.src !== resolved) {
+        video.src = resolved;
+        video.currentTime = 0;
+      }
+      const promise = video.play();
+      if (promise && typeof promise.catch === "function") {
+        promise.catch(() => {});
+      }
+    }
+  } else {
+    if (opponentVideoEl) {
+      opponentVideoEl.pause();
+      opponentVideoEl.removeAttribute("src");
+      opponentVideoEl.load();
+    }
+    mediaWindow.style.backgroundImage = `url('${resolved}')`;
+  }
+}
 
 function playSfx(path, { volume = 0.6, rate = 1 } = {}) {
   if (!audioEnabled || !soundEnabled || !path) return;
@@ -493,7 +560,7 @@ function renderOpponents(list) {
       startButton.disabled = false;
       const mediaSrc = (opp.media && opp.media[0]) || opp.portrait;
       if (mediaSrc) {
-        mediaWindow.style.backgroundImage = `url('${mediaSrc}')`;
+        setMediaWindowMedia(mediaSrc);
       }
     });
     opponentGrid.appendChild(card);
@@ -1090,11 +1157,9 @@ function renderState(state) {
       : null;
   const mediaSrc = indexedMedia || stripImage || (oppMedia && oppMedia[0]) || portrait;
   if (mediaSrc) {
-    // Ensure media path starts with / if not already
-    const fullMediaSrc = mediaSrc.startsWith('/') ? mediaSrc : `/${mediaSrc}`;
-    mediaWindow.style.backgroundImage = `url('${fullMediaSrc}')`;
+    setMediaWindowMedia(mediaSrc);
   } else {
-    mediaWindow.style.backgroundImage = 'none';
+    setMediaWindowMedia(null);
   }
 
   // reuse turn info for input/bet pulse

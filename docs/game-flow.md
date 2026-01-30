@@ -334,6 +334,9 @@ Endpoints:
 ### `src/server/core/opponents/Vicki/Opponent.ts`
 Overrides `Character` to set name, messages, and image list.
 
+### `src/server/core/opponents/Becky/Opponent.ts`
+Overrides `Character` to set name, messages, and media list (videos).
+
 ## Spec notes (current gaps)
 - No explicit "max 3 bets per player per round" limit exists.
 - AI `stay` decisions may resolve to `call` if a call is owed.

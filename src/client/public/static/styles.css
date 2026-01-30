@@ -437,7 +437,7 @@ button:active:not(:disabled) {
 
   /* Game layout responsive adjustments */
   .topbar {
-    width: 100%;
+    width: min(320px, calc(100vw - 2rem));
     max-width: none;
     padding: 0.6rem;
     font-size: 0.85rem;
@@ -528,6 +528,7 @@ button:active:not(:disabled) {
   }
 
   .topbar {
+    width: min(280px, calc(100vw - 1.5rem));
     padding: 0.5rem;
     font-size: 0.75rem;
   }
@@ -544,7 +545,8 @@ button:active:not(:disabled) {
 
 .topbar {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: auto auto;
   gap: 0.5rem;
   margin-bottom: 0.5rem;
   background:
@@ -553,10 +555,11 @@ button:active:not(:disabled) {
   padding: 0.85rem;
   border-radius: 12px;
   border: 1px solid #996a2b;
-  width: 100%;
-  max-width: calc(384px + 160px + 2px);
+  width: min(384px, calc(100vw - 2rem));
+  max-width: none;
   margin-left: auto;
   margin-right: auto;
+  transform: translateX(-16px);
   position: relative;
   overflow: hidden;
   box-shadow:
@@ -589,6 +592,11 @@ button:active:not(:disabled) {
 .topbar > * {
   position: relative;
   z-index: 2;
+}
+
+.topbar #status-chip {
+  grid-column: 1 / -1;
+  justify-self: center;
 }
 
 .layout {
@@ -647,13 +655,15 @@ button:active:not(:disabled) {
 #table .table-metric--call {
   top: auto;
   bottom: 56px;
-  left: 64px;
+  left: 50%;
+  transform: translateX(-100px);
 }
 
 #table .table-metric--pot {
   top: auto;
   bottom: 56px;
-  right: 64px;
+  left: 50%;
+  transform: translateX(20px);
 }
 
 .money-icon {
@@ -781,6 +791,15 @@ button:active:not(:disabled) {
   opacity: 1;
 }
 
+#media-window .opponent-media-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
 .hands {
   position: absolute;
   inset: 0;
@@ -798,14 +817,14 @@ button:active:not(:disabled) {
 
 .hand.player {
   position: absolute;
-  top: 48px;
+  bottom: 42px;
   left: 12px;
 }
 
 .hand.opponent {
   position: absolute;
-  top: 48px;
-  right: 12px;
+  bottom: 42px;
+  right: 60px;
 }
 
 .hand-label {
@@ -841,13 +860,13 @@ button:active:not(:disabled) {
 
 .wallet-bar {
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 50%;
+  transform: translateX(-50%);
   bottom: 8px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  gap: 8px;
+  gap: 40px;
   padding: 0 12px;
   pointer-events: auto;
   z-index: 8;
@@ -858,6 +877,8 @@ button:active:not(:disabled) {
   align-items: center;
   gap: 6px;
   flex: 0 0 auto;
+  position: relative;
+  z-index: 9;
 }
 
 .icon-button {
@@ -1009,30 +1030,37 @@ button:active:not(:disabled) {
 }
 
 .cards-row {
-  display: flex;
-  flex-direction: column;
-  gap: 0.28rem;
-  align-items: center;
-  opacity: 0.75;
+  position: relative;
+  --card-width: min(calc(60px * 1.14), calc(12vw * 1.14));
+  --card-height: calc(var(--card-width) * 1.6);
+  --stack-step: calc(var(--card-height) * 0.3);
+  height: calc(var(--card-height) + (var(--stack-step) * 4));
+  opacity: 0.9;
 }
 
-.hand.opponent .cards-row {
-  align-items: flex-end;
+/* Individual card overlap positioning */
+.cards-row .poker-card {
+  position: absolute;
+  width: var(--card-width);
+  height: var(--card-height);
+  border-radius: 8px;
 }
 
-.hand.player .cards-row {
-  align-items: flex-start;
-}
+.cards-row .poker-card:nth-child(1) { top: calc(var(--stack-step) * 0); z-index: 5; }
+.cards-row .poker-card:nth-child(2) { top: calc(var(--stack-step) * 1); z-index: 4; }
+.cards-row .poker-card:nth-child(3) { top: calc(var(--stack-step) * 2); z-index: 3; }
+.cards-row .poker-card:nth-child(4) { top: calc(var(--stack-step) * 3); z-index: 2; }
+.cards-row .poker-card:nth-child(5) { top: calc(var(--stack-step) * 4); z-index: 1; }
 
 .poker-card {
-  width: 38px;
-  aspect-ratio: 2.5 / 3.5;
+  width: calc(38px * 1.14);
+  aspect-ratio: 2.5 / 4;
   border-radius: 8px;
-  border: 1px solid #2b83f6;
+  border: none;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #162435, #0f1926);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+  background: transparent;
+  box-shadow: none;
 }
 
 .poker-card.selectable {
@@ -1048,10 +1076,11 @@ button:active:not(:disabled) {
 
 .poker-card .card-face {
   position: absolute;
-  inset: 3px;
-  border-radius: 6px;
-  background-size: cover;
+  inset: 0.25px;
+  border-radius: 7.5px;
+  background-size: contain;
   background-position: center;
+  background-repeat: no-repeat;
 }
 
 #table-banner {
@@ -1086,11 +1115,21 @@ button:active:not(:disabled) {
   }
 }
 
-.message-line {
+.message-stack {
   position: absolute;
   top: 14px;
-  left: 16px;
-  right: 16px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: flex-start;
+  z-index: 8;
+}
+
+.message-line {
+  position: relative;
+  width: 100%;
   padding: 0.5rem 0.75rem;
   background: rgba(11, 26, 42, 0.7);
   border-radius: 8px;
@@ -1282,7 +1321,7 @@ button:active:not(:disabled) {
 }
 
 .showdown-cards .poker-card {
-  width: 44px;
+  width: calc(44px * 1.14);
 }
 
 .showdown-summary {
@@ -1352,7 +1391,7 @@ button:active:not(:disabled) {
 }
 
 .hand-modal-cards .poker-card {
-  width: 60px;
+  width: calc(60px * 1.14);
 }
 
 .hand-modal .poker-card.selectable {
@@ -1375,17 +1414,18 @@ button:active:not(:disabled) {
   --action-col-width: calc(40px + 68px + 0.3rem);
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.5rem;
   background: #0b1a2a;
   border: 1px solid #1f3a57;
   border-radius: 12px;
-  padding: 0.8rem;
+  padding: 0.6rem;
   width: calc(var(--action-col-width) + 1.6rem);
   flex: 0 0 calc(var(--action-col-width) + 1.6rem);
-  margin-left: 0;
-  height: 384px;
-  max-height: 384px;
-  overflow-y: auto;
+  margin-left: -5px;
+  transform: translateX(-2px);
+  height: 320px;
+  max-height: 320px;
+  overflow: hidden;
 }
 
 label {
@@ -1407,23 +1447,26 @@ input[type="number"] {
 .buttons {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.25rem;
 }
 
 .bet-row {
   display: flex;
+  flex-direction: row;
   gap: 0.3rem;
   align-items: center;
 }
 
 .bet-row button {
-  width: 40px;
-  flex: 0 0 40px;
+  width: auto;
+  flex: 1 1 0;
+  min-width: 0;
 }
 
 .bet-row input {
-  width: 68px;
-  flex: 0 0 68px;
+  width: auto;
+  flex: 1 1 0;
+  min-width: 0;
 }
 
 .buttons button,
@@ -1432,7 +1475,7 @@ input[type="number"] {
 }
 
 .buttons.secondary {
-  margin-top: 0.5rem;
+  margin-top: 0.35rem;
 }
 
 .button-row {
@@ -1452,7 +1495,7 @@ input[type="number"] {
   overflow: hidden;
   isolation: isolate;
   border-radius: 12px;
-  min-height: 34px;
+  min-height: 30px;
   font-family: "Cinzel Decorative", "Cinzel", "Trajan Pro", "IM Fell English", "Garamond", serif;
   font-weight: 700;
   letter-spacing: 0.3px;
@@ -1467,7 +1510,7 @@ input[type="number"] {
     0 8px 18px rgba(0, 0, 0, 0.45);
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.6);
   transition: transform 0.1s ease, box-shadow 0.2s ease, filter 0.2s ease;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
 }
 
 .controls .buttons button::before,
@@ -1699,10 +1742,10 @@ input[type="number"] {
 
   .controls {
     position: fixed;
-    right: 12px;
-    top: 92px;
-    height: calc(100vh - 140px);
-    max-height: none;
+    right: 14px;
+    top: 137px;
+    height: 320px;
+    max-height: 320px;
     z-index: 70;
     transform: translateX(120%);
     transition: transform 0.25s ease;
@@ -1710,7 +1753,7 @@ input[type="number"] {
   }
 
   body.controls-open .controls {
-    transform: translateX(0);
+    transform: translateX(-2px);
     pointer-events: auto;
   }
 

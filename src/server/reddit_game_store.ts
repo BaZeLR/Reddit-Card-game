@@ -1,6 +1,7 @@
 import { Card, Deck, Hand } from './core/basicUtils';
 import { Character } from './core/StandardCharacter';
 import { Opponent as VickiOpponent } from './core/opponents/Vicki';
+import { Opponent as BeckyOpponent } from './core/opponents/Becky';
 import { GameManager, GameStage, Player, type GameSettings, type QueuedMessage } from './core/gameManager';
 
 const GAME_STATE_VERSION = 1;
@@ -122,12 +123,18 @@ function detectModule(ai: Character): string {
   if (ai instanceof VickiOpponent) {
     return 'Vicki';
   }
+  if (ai instanceof BeckyOpponent) {
+    return 'Becky';
+  }
   return 'Standard';
 }
 
 function buildAI(moduleName: string): Character {
   if (moduleName === 'Vicki') {
     return new VickiOpponent();
+  }
+  if (moduleName === 'Becky') {
+    return new BeckyOpponent();
   }
   return new Character();
 }

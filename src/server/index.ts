@@ -6,6 +6,7 @@ import { createPost } from './core/post';
 import { GameManager, GameStage, Player, type GameSettings } from './core/gameManager';
 import { Character } from './core/StandardCharacter';
 import { Opponent as VickiOpponent } from './core/opponents/Vicki';
+import { Opponent as BeckyOpponent } from './core/opponents/Becky';
 import { deserializeGame, serializeGame, type SerializedGame } from './reddit_game_store';
 
 const app = express();
@@ -203,10 +204,13 @@ type BuiltAI = {
 };
 
 function buildAI(config: PlayerConfig, defaultMoney: number): BuiltAI {
-  const money = config.money ?? defaultMoney;
+  const money =
+    config.money ?? (config.module === 'Becky' ? 350 : defaultMoney);
   let ai: Character;
   if (config.module === 'Vicki') {
     ai = new VickiOpponent();
+  } else if (config.module === 'Becky') {
+    ai = new BeckyOpponent();
   } else {
     ai = new Character();
   }
@@ -463,18 +467,32 @@ router.post('/load', async (_req, res): Promise<void> => {
 });
 
 router.get('/opponents', async (_req, res): Promise<void> => {
+  const MEDIA_BASE =
+    'https://raw.githubusercontent.com/BaZeLR/Reddit-Card-game/2026-01-30-eo0u/src/client/public';
   const opponents: OpponentInfo[] = [
     {
       name: 'Vicki',
       displayName: new VickiOpponent().name,
-      portrait: '/opponents/Vicki/Vportrait.png',
+      portrait: `${MEDIA_BASE}/opponents/Vicki/Vportrait.png`,
       media: [
-        '/opponents/Vicki/V_images/V1.png',
-        '/opponents/Vicki/V_images/V2.png',
-        '/opponents/Vicki/V_images/V3.png',
-        '/opponents/Vicki/V_images/V4.png',
-        '/opponents/Vicki/V_images/V5.png',
-        '/opponents/Vicki/V_images/V6.png',
+        `${MEDIA_BASE}/opponents/Vicki/V_images/V1.png`,
+        `${MEDIA_BASE}/opponents/Vicki/V_images/V2.png`,
+        `${MEDIA_BASE}/opponents/Vicki/V_images/V3.png`,
+        `${MEDIA_BASE}/opponents/Vicki/V_images/V4.png`,
+        `${MEDIA_BASE}/opponents/Vicki/V_images/V5.png`,
+        `${MEDIA_BASE}/opponents/Vicki/V_images/V6.png`,
+      ],
+    },
+    {
+      name: 'Becky',
+      displayName: new BeckyOpponent().name,
+      portrait: `${MEDIA_BASE}/opponents/Becky/becky_portrate.png`,
+      media: [
+        `${MEDIA_BASE}/opponents/Becky/B_images/becky.mp4`,
+        `${MEDIA_BASE}/opponents/Becky/B_images/becky_01.mp4`,
+        `${MEDIA_BASE}/opponents/Becky/B_images/becky_02.mp4`,
+        `${MEDIA_BASE}/opponents/Becky/B_images/becky_03.mp4`,
+        `${MEDIA_BASE}/opponents/Becky/B_images/becky_04.mp4`,
       ],
     },
   ];

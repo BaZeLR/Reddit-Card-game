@@ -843,13 +843,13 @@ button:active:not(:disabled) {
 
 .wallet-bar {
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 50%;
+  transform: translateX(-50%);
   bottom: 8px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  gap: 8px;
+  gap: 40px;
   padding: 0 12px;
   pointer-events: auto;
   z-index: 8;

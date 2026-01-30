@@ -857,8 +857,8 @@ button:active:not(:disabled) {
 
 .wallet-actions {
   position: absolute;
-  top: 51px;
-  left: 12px;
+  top: 55px;
+  left: calc(50% - 192px);
   display: flex;
   align-items: center;
   gap: 6px;

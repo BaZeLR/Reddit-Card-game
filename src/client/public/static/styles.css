@@ -808,7 +808,8 @@ button:active:not(:disabled) {
 .hand.opponent {
   position: absolute;
   bottom: 56px;
-  right: 12px;
+  left: 50%;
+  transform: translateX(180px);
 }
 
 .hand-label {

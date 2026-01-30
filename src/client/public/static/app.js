@@ -527,9 +527,11 @@ async function loadOpponents() {
 
 function cardImagePath(card) {
   if (!card || !card.suit || !card.value) return null;
-  const suit = String(card.suit).toLowerCase();
-  const value = String(card.value);
-  return `/cards/${suit}${value}.png`;
+  const suitMap = { 'hearts': 'H', 'diamonds': 'D', 'clubs': 'C', 'spades': 'S' };
+  const valueMap = { '14': 'A', '13': 'K', '12': 'Q', '11': 'J', '10': '0' };
+  const suit = suitMap[String(card.suit).toLowerCase()] || String(card.suit).toLowerCase().charAt(0).toUpperCase();
+  const value = valueMap[String(card.value)] || String(card.value);
+  return `https://deckofcardsapi.com/static/img/${value}${suit}.png`;
 }
 
 function renderCards(container, cards, reveal, options = {}) {
@@ -658,7 +660,7 @@ function renderHands(player, opponent, revealOpponentCards, override = null) {
   const revealOpponent = display.revealOpponent ?? revealOpponentCards;
   const padToFive = display.padToFive !== undefined ? display.padToFive : true;
   if (playerHandEl) {
-    renderCards(playerHandEl, playerCards, revealPlayer, {
+    renderCards(playerHandEl, playerCards, true, { // Always reveal player cards for fan
       selectable: drawSelectionEnabled && !dealInProgress,
       selectedIndices: selectedCardIndices,
       onToggle: (idx) => toggleCardSelection(idx, playerCards),
@@ -666,8 +668,7 @@ function renderHands(player, opponent, revealOpponentCards, override = null) {
     });
   }
   if (opponentHandEl) {
-    renderCards(opponentHandEl, opponentCards, revealOpponent, {
-      revealIndices: opponent.revealedIndices || [],
+    renderCards(opponentHandEl, opponentCards, false, { // Never reveal opponent cards for fan (backs)
       padToFive,
     });
   }

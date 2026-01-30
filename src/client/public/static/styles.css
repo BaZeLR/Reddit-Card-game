@@ -648,7 +648,7 @@ button:active:not(:disabled) {
   top: auto;
   bottom: 56px;
   left: 50%;
-  transform: translateX(-105px);
+  transform: translateX(-100px);
 }
 
 #table .table-metric--pot {

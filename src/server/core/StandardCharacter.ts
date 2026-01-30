@@ -336,7 +336,6 @@ export class Character {
       return new Message(this.name, betMsg2, ['bet'], { betAmt: betAmount }, 'bet', ['bet']);
     }
     if (foldCheck < 0) {
-      console.log(`${this.name} stayed/called`);
       if (gameStage === 'bet_and_stay') {
         return this.handleMsg('stay');
       }

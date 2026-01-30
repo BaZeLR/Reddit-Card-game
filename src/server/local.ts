@@ -106,7 +106,10 @@ function buildAI(config: PlayerConfig, defaultMoney: number): BuiltAI {
 
 function resolveMaxTries(config: PlayerConfig, ai: Character, fallback: number): number {
   const imageCount = Array.isArray(ai.imageMessages) ? ai.imageMessages.length : 0;
-  const resolved = config.maxTries ?? (imageCount > 1 ? imageCount - 1 : fallback);
+  const stripCount = imageCount > 1 ? imageCount - 1 : 0;
+  const wardrobeCount = Array.isArray(ai.wardrobeItems) ? ai.wardrobeItems.length : 0;
+  const resolved =
+    config.maxTries ?? (wardrobeCount > 0 ? wardrobeCount : stripCount > 0 ? stripCount : fallback);
   if (resolved > 0) {
     return resolved;
   }

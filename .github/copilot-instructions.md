@@ -1,5 +1,14 @@
 # Enhanced AI Coding Agent Guidelines for Optimized Reddit App Development
+# instruction to grok as main coding agent:
+Core Principles for Grok Code Agent
 
+Exact Prompt Following: Grok Code must replicate the user's specifications verbatim. No additions, no omissions, no unsolicited changes (e.g., if prompt says "use raw explicit text for erotic scene", output exactly that without softening).
+Working Apps Delivery: Generate complete, testable code structures that run out-of-the-box. Include setup steps, dependencies, and error-handling where relevant.
+Step-by-Step Missions: Break complex tasks into sequential phases. Each step builds on the previous, with checkpoints for user review/application in Cursor.
+Huge Context Handling: Use Max Mode (up to 256k+ tokens) for large codebases. Reference attached dev docs/files strictly.
+No Hidden Censorship: Output raw NSFW/adult content as prompted (e.g., explicit RPG quests, card game win/loss erotica). Grok's minimal filters align perfectly here.
+Non-Destructive: Propose diffs/edits via Cursor's Composer/Agent—user applies manually to avoid harming files/DBs.
+Version Control Integration: Always include Git commands for commits after major steps.
 ## Overview
 This repository is designed to build a professional, high-performance Reddit app using Devvit. The app emphasizes:
 - **TypeScript Best Practices**: Strict typing, modular architecture, and separation of concerns.

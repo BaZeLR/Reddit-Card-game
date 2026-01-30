@@ -17,5 +17,8 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "files.exclude": {
     "**/.git": false
-  }
+  },
+  "terminal.integrated.commandsToSkipShell": [
+    ""
+  ]
 }

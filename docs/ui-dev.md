@@ -163,9 +163,14 @@ File: `src/client/public/static/app.js`
 - Card back image: `/cards/backred.png`
 
 ### Opponent media
-- `src/client/public/opponents/Vicki/`
+- Local assets live under `src/client/public/opponents/`.
+- Opponent responses returned by `/opponents` can include full GitHub URLs for media.
+- `Vicki/`
   - `Vportrait.png`
   - `V_images/V1.png` through `V6.png`
+- `Becky/`
+  - `becky_portrate.png`
+  - `B_images/becky.mp4` + `becky_01.mp4` through `becky_04.mp4`
 
 ## Known UI constraints
 - Layout is fixed to 384px table width and 160px controls width.

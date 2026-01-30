@@ -5,7 +5,7 @@ A complete 5-card draw poker game with strip poker mechanics, built for Reddit u
 ## 🎮 Features
 
 - **Full Poker Logic**: 5-card draw poker with betting rounds, drawing phase, and showdown
-- **AI Opponent**: Play against Victoria with personality-driven dialogue and strategic decisions
+- **AI Opponents**: Play against Victoria or Becky with personality-driven dialogue and strategic decisions
 - **Strip Poker Mechanics**: Lose clothes as you lose money (6 stages of undressing)
 - **Multiple Interfaces**:
   - Legacy HTML interface with mobile action drawer
@@ -34,7 +34,7 @@ A complete 5-card draw poker game with strip poker mechanics, built for Reddit u
 
 3. **Open browser:**
    - Navigate to `http://localhost:3000`
-   - Start a game against Victoria
+  - Start a game against Victoria or Becky
    - Test mobile drawer and strip mechanics
 
 ### Reddit Deployment
@@ -60,7 +60,7 @@ A complete 5-card draw poker game with strip poker mechanics, built for Reddit u
 ### Poker Mechanics
 - **Betting Rounds**: First round betting, draw phase, second round betting
 - **Hand Evaluation**: Full poker hand ranking (Royal Flush → High Card)
-- **AI Strategy**: Victoria makes intelligent bets and draw decisions
+- **AI Strategy**: Victoria and Becky make intelligent bets and draw decisions
 - **Debt System**: Go into debt and strip clothes to continue playing
 
 ### Strip Poker
@@ -92,6 +92,7 @@ src/
 - **GameManager**: Core poker logic and state management
 - **StandardCharacter**: AI opponent behavior and dialogue
 - **Victoria**: Custom AI with personality and strip messages
+- **Becky**: Brash, bluff-heavy AI with video-based strip stages
 - **GameShell**: React UI with mobile layouts
 
 ## 📋 Game Flow
@@ -108,7 +109,7 @@ src/
 ### Adding New Opponents
 1. Create new opponent in `src/server/core/opponents/`
 2. Implement `Character` subclass with custom messages
-3. Add strip images to `src/client/public/opponents/`
+3. Add strip images or videos to `src/client/public/opponents/`
 4. Update opponent registry
 
 ### Modifying Game Rules
@@ -125,7 +126,7 @@ src/
 - Verify `src/client/public/static/app.js` has the latest changes
 
 **Opponent doesn't strip completely:**
-- Ensure `maxTries` uses `imageMessages.length` (should be 6 for Victoria)
+- Ensure `maxTries` uses `imageMessages.length` (e.g., 6 for Victoria, 5 for Becky media list)
 - Check `resolveMaxTries` function in `local.ts`
 
 **Devvit deployment fails:**

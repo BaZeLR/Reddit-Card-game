@@ -106,7 +106,7 @@ function buildAI(config: PlayerConfig, defaultMoney: number): BuiltAI {
 
 function resolveMaxTries(config: PlayerConfig, ai: Character, fallback: number): number {
   const imageCount = Array.isArray(ai.imageMessages) ? ai.imageMessages.length : 0;
-  const resolved = config.maxTries ?? (imageCount > 0 ? imageCount : fallback);
+  const resolved = config.maxTries ?? (imageCount > 1 ? imageCount - 1 : fallback);
   if (resolved > 0) {
     return resolved;
   }

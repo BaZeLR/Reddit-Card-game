@@ -802,14 +802,14 @@ button:active:not(:disabled) {
   position: absolute;
   top: 50%;
   left: 12px;
-  transform: translateY(15px);
+  transform: translateY(10px);
 }
 
 .hand.opponent {
   position: absolute;
   top: 50%;
   right: 12px;
-  transform: translateY(-15px);
+  transform: translateY(-10px);
 }
 
 .hand-label {

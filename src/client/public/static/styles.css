@@ -1010,51 +1010,19 @@ button:active:not(:disabled) {
 
 .cards-row {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  gap: 0.28rem;
   align-items: center;
-  position: relative;
-  height: 90px;
-  opacity: 0.9;
+  opacity: 0.75;
 }
 
 .hand.opponent .cards-row {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  width: min(180px, 40vw);
-}
-
-/* Victoria image next to opponent fan */
-.victoria-image {
-  position: absolute;
-  top: 20px;
-  right: 220px;
-  width: 120px;
-  height: 180px;
-  object-fit: contain;
-  z-index: 10;
+  align-items: flex-end;
 }
 
 .hand.player .cards-row {
-  position: absolute;
-  bottom: 80px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(180px, 40vw);
+  align-items: flex-start;
 }
-
-.cards-row .poker-card {
-  position: absolute;
-  width: min(60px, 12vw);
-  height: 90px;
-  border-radius: 8px;
-}
-
-.cards-row .poker-card:nth-child(1) { left: 0; z-index: 5; }
-.cards-row .poker-card:nth-child(2) { left: 35px; z-index: 4; }
-.cards-row .poker-card:nth-child(3) { left: 60px; z-index: 3; }
-.cards-row .poker-card:nth-child(4) { left: 85px; z-index: 2; }
-.cards-row .poker-card:nth-child(5) { left: 110px; z-index: 1; }
 
 .poker-card {
   width: 38px;

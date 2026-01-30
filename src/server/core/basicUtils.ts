@@ -26,7 +26,7 @@ export class Message {
 }
 
 export function debug(log: string, reason: string): void {
-  // Debug function - logging removed for production
+  console.log(`Logging '${log}' queueing. Reason for queue: ${reason}`);
 }
 
 export function aan(word: string): string {

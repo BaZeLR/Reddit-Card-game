@@ -801,15 +801,13 @@ button:active:not(:disabled) {
 .hand.player {
   position: absolute;
   bottom: 56px;
-  left: 50%;
-  transform: translateX(-180px);
+  left: 12px;
 }
 
 .hand.opponent {
   position: absolute;
   bottom: 56px;
-  left: 50%;
-  transform: translateX(180px);
+  right: 12px;
 }
 
 .hand-label {

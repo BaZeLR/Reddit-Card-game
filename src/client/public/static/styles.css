@@ -1018,20 +1018,24 @@ button:active:not(:disabled) {
 }
 
 .cards-row {
-  display: flex;
-  flex-direction: column;
-  gap: 0.28rem;
-  align-items: center;
-  opacity: 0.75;
+  position: relative;
+  height: 90px;
+  opacity: 0.9;
 }
 
-.hand.opponent .cards-row {
-  align-items: flex-end;
+/* Individual card overlap positioning */
+.cards-row .poker-card {
+  position: absolute;
+  width: min(60px, 12vw);
+  height: 53px;
+  border-radius: 8px;
 }
 
-.hand.player .cards-row {
-  align-items: flex-start;
-}
+.cards-row .poker-card:nth-child(1) { top: 0; z-index: 5; }
+.cards-row .poker-card:nth-child(2) { top: 13px; z-index: 4; }
+.cards-row .poker-card:nth-child(3) { top: 26px; z-index: 3; }
+.cards-row .poker-card:nth-child(4) { top: 39px; z-index: 2; }
+.cards-row .poker-card:nth-child(5) { top: 52px; z-index: 1; }
 
 .poker-card {
   width: 38px;
